@@ -15,16 +15,9 @@
 	<label>
 		Unit Type:
 		<select id="unitType" name="unitType" autocomplete="off">
-			<option value="imperial" selected>Imperial (Faherinheit)</option>
+			<option value="imperial" selected>Imperial (Fahrenheit)</option>
 			<option value="metric">Metric (Celsius)</option>
 			<option value="">Kelvin</option>
-		</select>
-	</label>
-	<label>
-		Get Weather For:
-		<select id="weatherType" name="weatherType"autocomplete="off">
-			<option value="weather" selected>Current Weather</option>
-			<option value="forecast">5 day Forecasted Weather</option>
 		</select>
 	</label>
 	<form id="searchForm" onsubmit="setSearch(this);return false">
@@ -100,6 +93,10 @@
 			<button type="submit">Search</button>
 		</div>
 	</form>
+</div>
+<div id='weatherResponseContainer'>
+	<div id='currentWeatherResponseContainer'></div>
+	<div id="forecastWeatherResponseContainer"></div>
 </div>
 <script type="text/javascript" src="formHandling.js"></script>
 <script type="text/javascript" src="requestHandling.js"></script>
