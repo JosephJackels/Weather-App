@@ -1,5 +1,15 @@
+.hidden{
+	display:none;
+}
+.errorMessage{
+	color:#FF0000;
+}
 .pageTitle {
+
+}
+.pageHeader {
 	text-align: center;
+	border:solid #000000 3px;
 }
 .titleContainer {
 	text-align: center;
