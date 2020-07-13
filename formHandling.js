@@ -5,23 +5,24 @@ This file contains global variables
 	weatherType - used to differentiate between a request for current weather and forecasted weather
 
 This file adds event listeners
-	searchType - a select input used to set which type of search is being done(by zip or city name) and update the form to hide/show the appropriate inputs
 	unitType - sets the global variable unit when the selection is changed
 	weatherType - sets the global variable weatherType when the selection is changed
 
 This file contains functions
 	updateUnits - sets the global variable units
-	updateSearchForm - hides/shows the appropriate inputs and resets values of hidden inputs
 	updateWeatherType - sets the global variable weatherType
-	setSearch - sets the global variable searchString - including the appropriate query type and query value - and makes a request if the searchString is set
-	makeRequest - removes any prior request, if it exists, and begin a new request from the openweatherapi
+	setSearch - cleans page by removing the old error messages and weather requests, sets the global variable searchString - including the appropriate query type and query value - and makes a request if the searchString is set
+	makeRequest - begin a new request from the openweatherapi
+	searchFailed - shows an error message when the search input is not parsed as a zip code or a city name
+	removeOldErrorMessages - checks the document for existing error messages and removes them
+	removeElement - given an element, remove that element from the document by removing it from the list of children of its parent node
 */
 
 var searchString;
-var units;
-var weatherType;
+var units = document.getElementById('unitType').value;
+var weatherType = document.getElementById('weatherType').value;
 
-document.getElementById('searchType').addEventListener('change', updateSearchForm);
+//document.getElementById('searchType').addEventListener('change', updateSearchForm);
 document.getElementById('unitType').addEventListener('change', updateUnits);
 document.getElementById('weatherType').addEventListener('change', updateWeatherType);
 
@@ -29,52 +30,48 @@ function updateUnits(unitInput){
 	//sets the proper unit value when a different option is selected
 	units = unitInput.target.value;
 }
-function updateSearchForm(searchInput){
-	//adjusts visibility of form elements based upon selection, and resets any values taht were set for the search option that is not being used
-	var cityChildren = [].slice.call(document.getElementById('citySearchForm').children);
-	var zipChildren = [].slice.call(document.getElementById('zipSearchForm').children)
-	switch(searchInput.target.value){
-		case 'zip':
-			cityChildren.forEach(input => input.value='');
-			document.getElementById('citySearchForm').style.display = "none";
-			document.getElementById('zipSearchForm').style.display = 'inline';
-		break;
-		case 'city':
-			zipChildren.forEach(input => input.value='');
-			document.getElementById('zipSearchForm').style.display = "none";
-			document.getElementById('citySearchForm').style.display = 'inline';
-		break;
-		default://should never get here
-		break;
-	}
-}
+
 function updateWeatherType(typeInput){
 	//updates weather search type - forecast or current
 	weatherType = typeInput.target.value;
 }
 function setSearch(form){
 	//builds search string to be sent to api based upon form values
-	var cityName = form.citySearch.value;
+	removeoldErrorMessages();
+	removeOldRequest();
+
+	var inputString = form.searchInput.value;
 	var stateCode = form.stateSelect.value;
-	var zipCode = form.zipSearch.value;
-	var tempString = "";
-	if(cityName != '') {
-		tempString = 'q=' + cityName;
-		if(stateCode != ''){
-			tempString += ',stateCode';
-		}
-	} else if(zipCode != ''){
-		tempString = 'zip=' + zipCode;
-	}
-	
-	if(tempString != ""){	
-		searchString = tempString;
+
+	if(/^\d\d\d\d\d([-. +]?\d\d\d\d)?$/.test(inputString)){
+		searchString = 'zip=' + inputString;
 		makeRequest();
-	}else{
-		alert('Did you enter an input?');
+	} else if(/^[a-zA-z]+(\s[a-zA-Z]+)*$/.test(inputString)){
+		searchString = 'q=' + inputString;
+		if(stateCode  != ''){
+			searchString +=',' + stateCode + ',US';
+		}
+		makeRequest();
+	}else {
+		searchFailed();
 	}
 }
 function makeRequest(){
-	removeOldRequest();
 	getWeather();
+}
+function searchFailed(){
+	var errorMessage = document.createElement('p');
+	errorMessage.setAttribute('id', 'errorParsing');
+	errorMessage.classList.add('errorMessage');
+	errorMessage.innerText = "Search did not parse as ZIP or City Name. ZIP should be in format #####, #####[.-+ ]####, or #########. City name should only contain letters, with multiple word names seperated by a single space between words. Must start and end with a letter.";
+	document.getElementById("searchForm").appendChild(errorMessage);
+}
+function removeoldErrorMessages(){
+	var errorList = document.querySelectorAll('.errorMessage');
+	if(errorList != null){
+		errorList.forEach(error => removeElement(error));
+	}
+}
+function removeElement(element){
+	element.parentNode.removeChild(element);
 }
