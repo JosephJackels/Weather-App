@@ -1,0 +1,373 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+	<title>Weather App</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+	<link rel="stylesheet" type="text/css" href="weatherAppStyles.css">
+</head>
+<body>
+<h1 class="pageTitle">Weather Bot 1.0</h1>
+<p style="text-align:center">Currently only supports searches in U.S. :(</p><!--Temporary element, to be removed when updates made-->
+<div class='searchContainer'>
+	<label>
+		Search For Weather By:
+		<select id="searchType" name="searchType" autocomplete="off">
+			<option value="" selected disabled hidden>Select...</option>
+			<option value="zip">Zip Code</option>
+			<option value="city">City Name</option>
+		</select>
+	</label>
+	<label>
+		Unit Type:
+		<select id="unitType" name="unitType" autocomplete="off">
+			<option value="imperial" selected>Imperial (Faherinheit)</option>
+			<option value="metric">Metric (Celsius)</option>
+			<option value="">Kelvin</option>
+		</select>
+	</label>
+	<label>
+		Get Weather For:
+		<select id="weatherType" name="weatherType"autocomplete="off">
+			<option value="" selected disabled hidden>Select...</option>
+			<option value="weather">Current Weather</option>
+			<option value="forecast">5 day Forecasted Weather</option>
+		</select>
+	</label>
+	<form id="searchForm" onsubmit="setSearch(this);return false">
+		<div id="citySearchForm" style="display: none;">
+			<input type="text" name="citySearch" placeholder="Search for a city" autocomplete="off">
+			<select name='stateSelect' size='1' autocomplete="off">
+				<option value="" selected disabled hidden>Select A State</option>
+				<optgroup label="USA">
+					<option value="AL">AL Alabama</option>
+					<option value="AK">AK Alaska</option>
+					<option value="AS">AS American Samoa</option>
+					<option value="AZ">AZ Arizona</option>
+					<option value="AR">AR Arkansas</option>
+					<option value="AA">AA Armed Forces Americas</option>
+					<option value="AE">AE Armed Forces Europe</option>
+					<option value="AP">AP Armed Forces Pacific</option>
+					<option value="CA">CA California</option>
+					<option value="CO">CO Colorado</option>
+					<option value="CT">CT Connecticut</option>
+					<option value="DE">DE Delaware</option>
+					<option value="DC">DC District of Columbia</option>
+					<option value="FM">FM Federated States of Micronesia</option>
+					<option value="FL">FL Florida</option>
+					<option value="GA">GA Georgia</option>
+					<option value="GU">GU Guam</option>
+					<option value="HI">HI Hawaii</option>
+					<option value="ID">ID Idaho</option>
+					<option value="IL">IL Illinois</option>
+					<option value="IN">IN Indiana</option>
+					<option value="IA">IA Iowa</option>
+					<option value="KS">KS Kansas</option>
+					<option value="KY">KY Kentucky</option>
+					<option value="LA">LA Louisiana</option>
+					<option value="ME">ME Maine</option>
+					<option value="MH">MH Marshall Islands</option>
+					<option value="MD">MD Maryland</option>
+					<option value="MA">MA Massachusetts</option>
+					<option value="MI">MI Michigan</option>
+					<option value="MN">MN Minnesota</option>
+					<option value="MS">MS Mississippi</option>
+					<option value="MO">MO Missouri</option>
+					<option value="MT">MT Montana</option>
+					<option value="NE">NE Nebraska</option>
+					<option value="NV">NV Nevada</option>
+					<option value="NH">NH New Hampshire</option>
+					<option value="NJ">NJ New Jersey</option>
+					<option value="NM">NM New Mexico</option>
+					<option value="NY">NY New York</option>
+					<option value="NC">NC North Carolina</option>
+					<option value="ND">ND North Dakota</option>
+					<option value="MP">MP Northern Mariana Islands</option>
+					<option value="OH">OH Ohio</option>
+					<option value="OK">OK Oklahoma</option>
+					<option value="OR">OR Oregon</option>
+					<option value="PW">PW Palau</option>
+					<option value="PA">PA Pennsylvania</option>
+					<option value="PR">PR Puerto Rico</option>
+					<option value="RI">RI Rhode Island</option>
+					<option value="SC">SC South Carolina</option>
+					<option value="SD">SD South Dakota</option>
+					<option value="TN">TN Tennessee</option>
+					<option value="TX">TX Texas</option>
+					<option value="UT">UT Utah</option>
+					<option value="VT">VT Vermont</option>
+					<option value="VI">VI Virgin Islands</option>
+					<option value="VA">VA Virginia</option>
+					<option value="WA">WA Washington</option>
+					<option value="WV">WV West Virginia</option>
+					<option value="WI">WI Wisconsin</option>
+					<option value="WY">WY Wyoming</option>
+				</optgroup>
+			</select>
+			<button type="submit">Search</button>
+		</div>
+		<div id="zipSearchForm" style="display: none;">
+			<input type="text" name="zipSearch" placeholder="Zip Code" autocomplete="off">
+			<button type="submit">Search</button>
+		</div>
+	</form>
+</div>
+<script type="text/javascript">
+	var apiKey = "b4808d3be62ce204189dcf0c196809f0";
+	var url = 'https:api.openweathermap.org/data/2.5/{weatherType}?{search}&appid={key}&units={units}';
+	var searchString;
+	var units;
+	var weatherType;
+
+	document.getElementById('searchType').addEventListener('change', updateSearchForm);
+	document.getElementById('unitType').addEventListener('change', updateUnits);
+	document.getElementById('weatherType').addEventListener('change', updateWeatherType);
+	
+	function getWeather(){
+		//performs a request from openweathermap.org using their api
+		var request = new XMLHttpRequest();
+		request.addEventListener("load", requestListener);
+		request.open("GET",url.replace('{weatherType}', weatherType).replace('{search}', searchString).replace('{key}',apiKey).replace('{units}',units));
+		request.send();
+	}
+	function removeOldRequest() {
+		//removes current output container, if it exists
+		if(document.getElementById('mainContainer') != null){
+			document.getElementById('mainContainer').parentNode.removeChild(document.getElementById('mainContainer'));
+		}
+	}
+	function requestListener(){
+		//fires when a response is recieved from api request
+		//parses response, build elements from response, appends to page 
+		var results = JSON.parse(this.responseText);
+		
+		if(weatherType == 'weather'){
+			document.body.appendChild(createCurrentWeatherCard(results));
+		} else if(weatherType == 'forecast'){
+			document.body.appendChild(createForecastWeatherContainer(results));
+		}
+	}
+	function updateUnits(unitInput){
+		//sets the proper unit value when a different option is selected
+			units = unitInput.target.value;
+	}
+	function updateSearchForm(searchInput){
+		//adjusts visibility of form elements based upon selection, and resets any values taht were set for the search option that is not being used
+		var cityChildren = [].slice.call(document.getElementById('citySearchForm').children);
+		var zipChildren = [].slice.call(document.getElementById('zipSearchForm').children)
+		switch(searchInput.target.value){
+			case 'zip':
+				cityChildren.forEach(input => input.value='');
+				document.getElementById('citySearchForm').style.display = "none";
+				document.getElementById('zipSearchForm').style.display = 'inline';
+			break;
+			case 'city':
+				zipChildren.forEach(input => input.value='');
+				document.getElementById('zipSearchForm').style.display = "none";
+				document.getElementById('citySearchForm').style.display = 'inline';
+			break;
+			default://should never get here
+			break;
+		}
+	}
+	function updateWeatherType(typeInput){
+		//updates weather search type - forecast or current
+		weatherType = typeInput.target.value;
+	}
+	function setSearch(form){
+		//builds search string to be sent to api based upon form values
+		var cityName = form.citySearch.value;
+		var stateCode = form.stateSelect.value;
+		var zipCode = form.zipSearch.value;
+		var tempString = "";
+		if(cityName != '') {
+			tempString = 'q=' + cityName;
+			if(stateCode != ''){
+				tempString += ',stateCode';
+			}
+		} else if(zipCode != ''){
+			tempString = 'zip=' + zipCode;
+		}
+		
+		searchString = tempString;
+		removeOldRequest();
+		getWeather();
+	}
+	function createTitleContainer(cityName, date) {
+		//creates the title container for current weather requests, given a string for the city name and a string for the date that has already been converted from Unix UTC
+		var titleContainer = document.createElement('div');
+		titleContainer.classList.add('titleContainer');
+		
+		var title = document.createElement('p');
+		title.classList.add('titleNameComponent');
+		title.innerText = cityName;
+		titleContainer.appendChild(title);
+
+		var time = document.createElement('p');
+		time.classList.add('titleTimeComponent');
+		time.innerText = date;
+		titleContainer.appendChild(time);
+
+		return titleContainer;
+	}
+	function createTitleContainerRange(cityName, startDate, endDate){
+		//creates a title container for forecast weather requests, date has a start and end to represent the range of time being given a forecast for
+		var titleContainer = document.createElement('div');
+		titleContainer.classList.add('titleContainer');
+		
+		var title = document.createElement('p');
+		title.classList.add('titleNameComponent');
+		title.innerText = cityName;
+		titleContainer.appendChild(title);
+
+		var time = document.createElement('p');
+		time.classList.add('titleTimeComponent');
+		time.innerText = startDate + ' - ' + endDate;
+		titleContainer.appendChild(time);
+
+		return titleContainer;		
+	}
+	function createCurrentWeatherCard(results){
+		//takes a parsed JSON array of open weather api response
+		//builds a card to be used to display a current weather request
+
+		var cardContainer = document.createElement('div');
+		cardContainer.classList.add('currentWeatherCardContainer');
+		cardContainer.setAttribute('id', 'mainContainer');
+		cardContainer.appendChild(createTitleContainer(results.name, unixTimeToDate(results.dt * 1000 + results.timezone)));
+
+		var weatherCond = document.createElement('p');
+		weatherCond.classList.add('weatherComponent');
+		weatherCond.innerText = results.weather[0].main;
+		cardContainer.appendChild(weatherCond);
+
+		var tempContainer = document.createElement('div');
+		tempContainer.classList.add('tempContainer');
+		var currentTemp = document.createElement('p');
+		currentTemp.classList.add('tempComponent');
+		currentTemp.innerText = 'Current Temp: ' + results.main.temp;
+		tempContainer.appendChild(currentTemp);
+
+		var feelsLikeTemp = document.createElement('p');
+		feelsLikeTemp.classList.add('tempComponent');
+		feelsLikeTemp.innerText = 'Feels Like: ' + results.main.feels_like;
+		tempContainer.appendChild(feelsLikeTemp);
+
+		cardContainer.appendChild(tempContainer);
+
+		return cardContainer;
+
+	}
+	function createForecastWeatherContainer(results){
+		//creates main container for forecasted weather request, takes in parsed JSON response from openweathermap api
+		//splits response by day, adjusts by timezone to properly split by correct day
+		var forecastList = splitListByDate(results.list, results.city.timezone);
+		var forecastContainer = document.createElement('div');
+		forecastContainer.classList.add('mainForecastCardContainer');
+		forecastContainer.setAttribute('id', 'mainContainer');
+		forecastContainer.appendChild(createTitleContainerRange(results.city.name, unixTimeToDate(forecastList[0][0].dt * 1000 + results.city.timezone), unixTimeToDate(forecastList[forecastList.length - 1][forecastList[forecastList.length - 1].length - 1].dt * 1000 + results.city.timezone)));
+
+		forecastList.forEach(forecastGroup => forecastContainer.appendChild(createForecastWeatherCard(forecastGroup, results.city.timezone)));
+
+		return forecastContainer;
+	}
+	function createForecastWeatherCard(forecastGroup, timezone){
+		//creates a single day's forecast weather card - given an array of lists, each list contains an object that contains the respons from openweathermap api
+		var groupContainer = document.createElement('div');
+		groupContainer.classList.add('forecastCardGroup');
+		var groupDate = document.createElement('p');
+		groupDate.classList.add('forecastDateComponent');
+		tempString = unixTimeToDate(forecastGroup[0].dt * 1000 + timezone);
+		groupDate.innerText = tempString.substring(0,tempString.indexOf(' '));
+		groupContainer.appendChild(groupDate);
+		forecastGroup.forEach(forecast => groupContainer.appendChild(createSingleForecast(forecast, timezone)));
+		
+		return groupContainer;
+	}
+	function createSingleForecast(forecast, timezone){
+		//creates each individual forecast. takes one single list item from the array of lists in the forecastGroup
+		//builds the card representing that 3hour block of data
+		var singleForecastContainer = document.createElement('div');
+		singleForecastContainer.classList.add('singleForecastComponentContainer');
+		var time = document.createElement('p');
+		time.classList.add('timeComponent');
+		var tempString = unixTimeToDate(forecast.dt * 1000 + timezone);
+		time.innerText = tempString.substring(tempString.indexOf(' '));
+		singleForecastContainer.appendChild(time);
+
+		var weather = document.createElement('p');
+		weather.classList.add('weatherComponent');
+		weather.innerText = forecast.weather[0].main + ' - ' + forecast.weather[0].description;
+		singleForecastContainer.appendChild(weather);
+
+		var tempContainer = document.createElement('div');
+		tempContainer.classList.add('tempContainer');
+		var currentTemp = document.createElement('p');
+		currentTemp.classList.add('tempComponent');
+		currentTemp.innerText = 'Temp. : ' + forecast.main.temp;
+		tempContainer.appendChild(currentTemp);
+
+		var feelsLikeTemp = document.createElement('p');
+		feelsLikeTemp.classList.add('tempComponent');
+		feelsLikeTemp.innerText = 'Feels like: ' + forecast.main.feels_like;
+		tempContainer.appendChild(feelsLikeTemp);
+
+		var maxTemp = document.createElement('p');
+		maxTemp.classList.add('tempComponent');
+		maxTemp.innerText = 'High of: ' + forecast.main.temp_max;
+		tempContainer.appendChild(maxTemp);
+
+		var minTemp = document.createElement('p');
+		minTemp.classList.add('tempComponent');
+		minTemp.innerText = 'Low of: ' + forecast.main.temp_min;
+		tempContainer.appendChild(minTemp);
+
+		singleForecastContainer.appendChild(tempContainer);
+
+		return singleForecastContainer;
+	}
+	function unixTimeToDate(unixTimeShifted){//expects time to be shifted if in milliseconds, and adjusted for timezone
+		// converts unixtime, that has been adjusted rom seconds to milliseconds and shifted by timezone
+		//converts into a date in format mm/dd/yyyy hh:mm
+		var date = new Date(unixTimeShifted);
+		var year = date.getFullYear();
+		var month = date.getMonth() + 1;
+		var day = date.getDate();
+		var hour = date.getHours();
+
+		var min = date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes();
+
+		return(month + '/' + day + '/' + year + ' ' + hour + ':' + min);
+	}
+	function getDayFromUnixTime(unixTime, timezone){
+		//returns just the day of a given unixtime timezone combination
+		//used for splitting lists by correct day
+		var date = new Date(unixTime * 1000 + timezone);
+		return date.getDate();
+	}
+	function splitListByDate(list, timezone){
+		//takes a list of responses from api, each inner list has a dt property representing it's unixtimestamp.
+		//using the timezone, the list is split into a a 2d list of lists, with each roup of lists being grouped by day and returned
+		var tempList = list;
+		var splitList = [];
+		var splitIndex = 0;
+		var currentDay;
+		tempList.forEach(listItem => listItem.day = getDayFromUnixTime(listItem.dt, timezone));
+		currentDay = tempList[0].day;
+		for(var i = 0; i < tempList.length; i++){
+			if(currentDay == tempList[i].day){
+				if(splitList[splitIndex] == null){
+					splitList[splitIndex] = new Array;
+				}
+				splitList[splitIndex].push(tempList[i]);
+			} else {
+				currentDay = tempList[i].day;
+				splitIndex++;
+				i-=1;
+			}
+		}
+		return splitList;
+
+	}
+</script>
+</body>
+</html>

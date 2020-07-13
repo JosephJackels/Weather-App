@@ -1,0 +1,37 @@
+.pageTitle {
+	text-align: center;
+}
+.titleContainer {
+	text-align: center;
+	background-color: #ff0000;
+	border: solid #000000 1px;
+}
+.searchContainer {
+	text-align: center;
+}
+.weatherComponent {
+
+}
+.tempContainer {
+
+}
+.outerContainer {
+
+}
+.mainForecastCardContainer, .currentWeatherCardContainer{
+	margin: auto;
+	border: solid #000000 1px;
+	background-color: #0000ff;
+	width: max-content;
+	text-align: center;
+}
+.forecastCardGroup {
+	background-color: inherit;
+	text-align: center;
+	display: inline-block;
+	float: left;
+	border:solid #000000 1px;
+}
+.singleForecastComponentContainer {
+	border: solid #000000 1px;
+}
