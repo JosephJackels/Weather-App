@@ -23,9 +23,6 @@
 	box-sizing: border-box;
 	display: inline-block;
 }
-.weatherIconComp{
-	
-}
 body{
 background: #3ac7a4;
 }
@@ -49,15 +46,6 @@ background: #3ac7a4;
 	box-sizing: border-box;
 	display: inline-block;
 	text-align: center;
-}
-.weatherComponent {
-
-}
-.tempContainer {
-
-}
-.outerContainer {
-
 }
 .mainForecastCardContainer{
 	margin: auto;
