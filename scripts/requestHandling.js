@@ -2,6 +2,7 @@
 This file contains global variables
 	apiKey - my apiKey used when making a request from openweatherapi *This is a free key and can only make a limited amountof requests per minute, may cause errors*
 	url - the base url to be editted for a search by replacing {weatherType}, {search}, {key}, and {units} appropriately
+	unitSymbol - a variable that is set when a request is made, creating a string to be used to display temperature units
 
 This file contains functions
 	getWeather - intializes two HTTP requests, one for a current weather query, and one for a forecast weather query 
@@ -13,11 +14,26 @@ This file contains functions
 */
 var apiKey = "b4808d3be62ce204189dcf0c196809f0";
 var url = 'https:api.openweathermap.org/data/2.5/{weatherType}?{search}&appid={key}&units={units}';
+var unitSymbol;
 
 function getWeather(){
 	//performs a request from openweathermap.org using their api
 	var currentWeatherRequest = new XMLHttpRequest();
 	var forecastWeatherRequest = new XMLHttpRequest();
+
+	unitSymbol = "\u00B0";
+	switch(units){
+		case 'imperial':
+			unitSymbol += 'F';
+		break;
+		case 'metric':
+			unitSymbol += 'C';
+		break;
+		case '':
+		default:
+			unitSymbol += 'K';
+		break;
+	}
 
 	setRequest(currentWeatherRequest, 'weather');
 	setRequest(forecastWeatherRequest, 'forecast');
@@ -58,7 +74,7 @@ function requestListener(){
 		} else if(attemptType == 'zip'){
 			notFoundError('A zip code with the paramater - ' + attempt);
 		} else {
-			notFoundError('Search type was not found correctly. How did you get here?');
+			notFoundError('Search type was not found correctly. This error should never happen');
 		}
 	}
 }

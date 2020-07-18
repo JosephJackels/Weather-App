@@ -4,19 +4,52 @@
 .errorMessage{
 	color:#FF0000;
 }
-.pageTitle {
-
-}
 .pageHeader {
 	text-align: center;
 	border:solid #000000 3px;
 }
-.titleContainer {
-	text-align: center;
-	background-color: #ff0000;
-	border: solid #000000 1px;
-}
 .searchContainer {
+	text-align: center;
+	//padding: 50px;
+}
+.currentWeatherCardContainer {
+	width: 100%;
+	box-sizing: border-box;
+	display:inline-block;
+	background: #3ac7a4;
+	position: relative;
+}
+.currentWeatherCardMainPanel {
+	float: left;
+	width: 80%;
+	box-sizing: border-box;
+	display: inline-block;
+}
+.weatherIconComp{
+	
+}
+body{
+background: #3ac7a4;
+}
+#alignmentContainer{
+	text-align:center;
+	padding: 50px;
+}
+#weatherResponseContainer{
+	width:80%;
+	margin:auto;
+	background: #3ac7a4;
+  box-shadow:  -20px -20px 60px #31a98b, 
+             20px 20px 60px #43e5bd;
+	display: inline-block;
+}
+.currentTemperatureContainer{
+	width: 20%;
+	top: 50%;
+	right: 0%;
+	position: absolute;
+	box-sizing: border-box;
+	display: inline-block;
 	text-align: center;
 }
 .weatherComponent {
@@ -28,19 +61,20 @@
 .outerContainer {
 
 }
-.mainForecastCardContainer, .currentWeatherCardContainer{
+.mainForecastCardContainer{
 	margin: auto;
-	border: solid #000000 1px;
-	background-color: #0000ff;
-	width: max-content;
+	background-color: #EFEEEE;
 	text-align: center;
 }
-.forecastCardGroup {
-	background-color: inherit;
+.forecastCard{
 	text-align: center;
 	display: inline-block;
 	float: left;
-	border:solid #000000 1px;
+	box-sizing: border-box;
+	width: calc(100%/6);
+	background: #3ac7a4;
+  box-shadow:  -20px -20px 60px #31a98b, 
+             20px 20px 60px #43e5bd;
 }
 .singleForecastComponentContainer {
 	border: solid #000000 1px;

@@ -36,7 +36,7 @@ function setSearch(form){
 	var stateCode = form.stateSelect.value;
 
 	if(/^\d\d\d\d\d([-. +]?\d\d\d\d)?$/.test(inputString)){
-		searchString = 'zip=' + inputString;
+		searchString = 'zip=' + inputString.slice(0,5);
 		makeRequest();
 	} else if(/^[a-zA-z]+(\s[a-zA-Z]+)*$/.test(inputString)){
 		searchString = 'q=' + inputString;
