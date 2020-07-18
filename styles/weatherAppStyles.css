@@ -16,15 +16,14 @@
 	display:inline-block;
 	background: #3ac7a4;
 	position: relative;
+	box-shadow: inset -20px -20px 60px #31a98b, 
+            inset 20px 20px 60px #43e5bd;
 }
 .currentWeatherCardMainPanel {
 	float: left;
 	width: 80%;
 	box-sizing: border-box;
 	display: inline-block;
-}
-.weatherIconComp{
-	
 }
 body{
 background: #3ac7a4;
@@ -50,15 +49,6 @@ background: #3ac7a4;
 	display: inline-block;
 	text-align: center;
 }
-.weatherComponent {
-
-}
-.tempContainer {
-
-}
-.outerContainer {
-
-}
 .mainForecastCardContainer{
 	margin: auto;
 	background-color: #EFEEEE;
@@ -70,9 +60,6 @@ background: #3ac7a4;
 	float: left;
 	box-sizing: border-box;
 	background: #3ac7a4;
-  box-shadow:  -20px -20px 60px #31a98b, 
-             20px 20px 60px #43e5bd;
-}
-.singleForecastComponentContainer {
-	border: solid #000000 1px;
+  box-shadow:inset -20px -20px 60px #31a98b, 
+            inset 20px 20px 60px #43e5bd;
 }
