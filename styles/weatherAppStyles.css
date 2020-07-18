@@ -6,11 +6,9 @@
 }
 .pageHeader {
 	text-align: center;
-	border:solid #000000 3px;
 }
 .searchContainer {
 	text-align: center;
-	//padding: 50px;
 }
 .currentWeatherCardContainer {
 	width: 100%;
