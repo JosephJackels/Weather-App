@@ -52,6 +52,7 @@ function makeRequest(){
 	getWeather();
 }
 function createErrorMessage(errorString, appendTo){
+	removeOldErrorMessages();
 	var errorMessage = document.createElement('p');
 	errorMessage.classList.add('errorMessage');
 	errorMessage.innerText = errorString; 
