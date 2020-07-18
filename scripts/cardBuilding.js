@@ -77,15 +77,16 @@ function createForecastWeatherContainer(results){
 	var forecastList = splitListByDate(results.list, results.city.timezone);
 	var forecastContainer = document.createElement('div');
 	forecastContainer.classList.add('mainForecastCardContainer');
-
-	forecastList.forEach(forecastGroup => forecastContainer.appendChild(createForecastWeatherCard(forecastGroup, results.city.timezone)));
+	var cardCount = forecastList.length;
+	forecastList.forEach(forecastGroup => forecastContainer.appendChild(createForecastWeatherCard(forecastGroup, results.city.timezone, cardCount)));
 
 	return forecastContainer;
 }
-function createForecastWeatherCard(forecastGroup, timezone){
+function createForecastWeatherCard(forecastGroup, timezone, cardCount){
 	//creates a single day's forecast weather card - given an array of lists, each list contains an object that contains the respons from openweathermap api
 	var forecastCard = document.createElement('div');
 	forecastCard.classList.add('forecastCard');
+	forecastCard.style.width = 'calc(100%/' + cardCount +')';
 
 	var forecastCardDayComp = document.createElement('div');
 	forecastCardDayComp.classList.add('forecastCardDayComp');

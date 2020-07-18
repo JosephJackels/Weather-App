@@ -39,7 +39,7 @@ background: #3ac7a4;
 	width:80%;
 	margin:auto;
 	background: #3ac7a4;
-  box-shadow:  -20px -20px 60px #31a98b, 
+	box-shadow:  -20px -20px 60px #31a98b, 
              20px 20px 60px #43e5bd;
 	display: inline-block;
 }
@@ -71,7 +71,6 @@ background: #3ac7a4;
 	display: inline-block;
 	float: left;
 	box-sizing: border-box;
-	width: calc(100%/6);
 	background: #3ac7a4;
   box-shadow:  -20px -20px 60px #31a98b, 
              20px 20px 60px #43e5bd;
