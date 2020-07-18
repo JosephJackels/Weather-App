@@ -8,8 +8,9 @@
 <body>
 <div class="pageHeader">
 	<h1 class="pageTitle">Weather Bot 1.0</h1>
-	<p style="text-align:center">Currently only supports searches in U.S. :(</p><!--Temporary element, to be removed when updates made-->
-	<p style="text-align:center">If a search is done by city name, a state is selected, the city does not exist in selected state, AND the city does exist in one or more other states, the results will be given for the city,state combonition that comes first when listed alphabetically</p>
+	<p>Currently only supports searches in U.S. :(</p><!--Temporary element, to be removed when updates made-->
+	<p>If a search is done by city name, a state is selected, the city does not exist in selected state, AND the city does exist in one or more other states, the results will be given for the city,state combinition that comes first when listed alphabetically</p>
+	<p>This search allows for extended zip codes - #####-####, but the openweathermap api does not support them, so the zip code is trimmed to the leading 5 digits</p>
 </div>
 <div class='searchContainer'>
 	<label>
@@ -94,9 +95,11 @@
 		</div>
 	</form>
 </div>
-<div id='weatherResponseContainer'>
-	<div id='currentWeatherResponseContainer'></div>
-	<div id="forecastWeatherResponseContainer"></div>
+<div id='alignmentContainer'>
+	<div id='weatherResponseContainer'>
+		<div id='currentWeatherResponseContainer'></div>
+		<div id="forecastWeatherResponseContainer"></div>
+	</div>
 </div>
 <script type="text/javascript" src="scripts/formHandling.js"></script>
 <script type="text/javascript" src="scripts/requestHandling.js"></script>
