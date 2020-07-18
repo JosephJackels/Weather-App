@@ -30,7 +30,7 @@ function createCurrentWeatherCard(results){
 
 		var dateTimeComp = document.createElement('div');
 		dateTimeComp.classList.add('dateTimeComp');
-		dateTimeComp.innerText = unixTimeToDate(results.dt * 1000 + results.timezone);
+		dateTimeComp.innerText =getDayFromUnixTime(results.dt, results.timezone) + ', ' + unixTimeToDate(results.dt * 1000 + results.timezone);
 		currentWeatherCardMainPanel.appendChild(dateTimeComp);
 
 		var weatherDescriptionComp = document.createElement('div');
@@ -53,7 +53,7 @@ function createCurrentWeatherCard(results){
 		
 		var currentTempComp = document.createElement('div');
 		currentTempComp.classList.add('tempComp', 'currentTempComp');
-		currentTempComp.innerText = Math.round(results.main.temp) + unitSymbol;
+		currentTempComp.innerText = "Currently: " + Math.round(results.main.temp) + unitSymbol;
 		currentTemperatureContainer.appendChild(currentTempComp);
 
 		var feelsLikeTempComp = document.createElement('div');
@@ -209,10 +209,17 @@ function unixTimeToDate(unixTimeShifted){//expects time to be shifted if in mill
 	var month = date.getMonth() + 1;
 	var day = date.getDate();
 	var hour = date.getHours();
+	var meridian = hour > 11 ? 'PM' : 'AM';
+	if(hour > 12){
+		hour -= 12;
+	}
+	if(hour == 0){
+		hour = 12;
+	}
 
 	var min = date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes();
 
-	return(month + '/' + day + '/' + year + ' ' + hour + ':' + min);
+	return(month + '/' + day + '/' + year + ' ' + hour + ':' + min + ' ' + meridian);
 }
 function getDateFromUnixTime(unixTime, timezone){
 	//returns just the day of a given unixtime timezone combination
