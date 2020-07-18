@@ -1,13 +1,18 @@
 /*
+This file contains global variables
+	iconUrl - a url for fetching icons from openweather - replace imageCode with the weather code returned from the api
 This file contains functions
-	createTitleContainer - creates the header for a current weather card container - given a city name and the date of the requested weather
-	createTitleContainerRange - creates the header for a forecast weather card container - given a city name and the starting and ending date
 	createCurrentWeatherCard - builds the main weather card container, and builds and appends the weatherComponent and the tempContainer of tempComponents
 	createForecastWeatherContainer - creates the main container for a forecast request - builds and appends individiual forecast card groups where each group is a list of forecasts sorted into the groups by date
 	createForecastWeatherCard - given one group of forecasts that share the same date, builds the components that represent each forecast into one card
-	createSingleForecast - creates the single forecast component to be grouped into a card
+	getMode - given array of strings, return which occurs the most
+	getAverage - given an array of integers/numbers/floats return an average
+	getHighest - given an array of integers/numbers/floats return the max value
+	getLowest - given an array of integers/numbers/floats return the min value
+	createSingleFOrecastDataList - pulls wanted data from one forecast and returns an object to be put into an array of entries for later averaging, analyzing etc.
 	unixTimeToDate - takes a Unix TImestamp and a timezone and converts it into MM/DD/YYYY HH:MM format
-	getDayFromUnixTime - takes a unix Timestamp and a timezone and returns just the DD portion - used to quickly sort forecasts
+	getDateFromUnixTime - takes a unix Timestamp and a timezone and returns just the DD portion - used to quickly sort forecasts
+	getDayFromUnixTime - returns the day of the week given a unixtime and timezone
 	splitListByDate - takes a 1d array [] of forecasts and converts it into a 2d aray, where each entry in the first field of the new array is an array of forecasts that share the same date
 */
 var iconUrl = 'https://openweathermap.org/img/wn/{imageCode}{resolution}.png';
