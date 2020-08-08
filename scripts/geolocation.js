@@ -1,6 +1,7 @@
-//random init coords, incase geolocation is unavailable/to set map until geolocation is approved, gives map somewhere to 'move' from
-var mapLon = 37.41;
-var mapLat = 8.82;
+//init coords set to St Paul, MN. init coords are used when geolocation is unavailable/to set map until geolocation is approved,
+//gives map somewhere to 'move' from
+var mapLon = -93.16;
+var mapLat = 44.95;
 var openWeatherMapUrl = 'https://tile.openweathermap.org/map/{layer}/{z}/{x}/{y}.png?appid={api_key}';
 if('geolocation' in navigator){
 	navigator.geolocation.getCurrentPosition((position) => {moveMap(position.coords.longitude, position.coords.latitude);});
@@ -51,6 +52,7 @@ map.on('moveend', function(){
 
 function moveMap(lon, lat){
 	var newCenter = ol.proj.fromLonLat([lon, lat]);
+	console.log(lon + ', ' + lat);
 	view.animate({
 		center: newCenter,
 		duration: 2000,
