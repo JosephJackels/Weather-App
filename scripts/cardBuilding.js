@@ -129,16 +129,19 @@ function createForecastWeatherCard(forecastGroup, timezone, cardCount){
 
 	var tempComp = document.createElement('div');
 	tempComp.classList.add('forecastTempComp');
+	tempComp.classList.add('tempComp');
 	tempComp.innerText = Math.round(averageTemp) + unitSymbol;
 	forecastCard.appendChild(tempComp);
 
 	var tempHighComp = document.createElement('div');
 	tempHighComp.classList.add('forecastTempHighComp');
+	tempHighComp.classList.add('tempComp');
 	tempHighComp.innerText = 'H:' + Math.round(averageTempHigh) + unitSymbol;
 	forecastCard.appendChild(tempHighComp);
 
 	var tempLowComp = document.createElement('div');
 	tempLowComp.classList.add('forecastTempLowComp');
+	tempLowComp.classList.add('tempComp');
 	tempLowComp.innerText = 'L:' + Math.round(averageTempLow) + unitSymbol;
 	forecastCard.appendChild(tempLowComp);
 

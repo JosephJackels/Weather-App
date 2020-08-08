@@ -24,6 +24,11 @@ document.getElementById('unitType').addEventListener('change', updateUnits);
 
 function updateUnits(unitInput){
 	//sets the proper unit value when a different option is selected
+	//if request is already made, updates unit values
+	if(document.getElementById('currentWeatherResponseContainer').childNodes.length){
+		//request exists
+		document.querySelectorAll('.tempComp').forEach(comp => comp.innerText = calcNewTemp(comp.innerText, unitInput.target.value));
+	}
 	units = unitInput.target.value;
 }
 
@@ -70,4 +75,52 @@ function removeOldErrorMessages(){
 }
 function removeElement(element){
 	element.parentNode.removeChild(element);
+}
+
+function calcNewTemp(text, newUnit){
+	var oldUnit = text[text.length - 1];
+	var preTemp = text.replace(/\d+.*$/, '');
+	var temp = parseInt(text.replace(/^\D*(\d+)\D*$/g, '$1'));
+	var symbol = "\u00B0";
+	switch(oldUnit){
+		case'F':
+			if(newUnit == 'metric' || newUnit == ''){
+				temp = ((temp - 32) * (5 / 9));
+			}
+			if(newUnit == ''){
+				temp = temp + 273.15;
+			}
+		break;
+		case'C':
+			if(newUnit == ''){
+				temp = temp + 273.15;
+			}else if(newUnit == 'imperial'){
+				temp = ((temp * (9/5)) + 32);
+			}
+		break;
+		case'K':
+			if(newUnit == 'metric' || newUnit == 'imperial'){
+				temp = temp - 273.15;
+			}
+			if(newUnit == 'imperial'){
+				temp = ((temp * (9/5)) + 32);
+			}
+		break;
+		default:
+		break;
+	}
+
+	switch(newUnit){
+		case 'imperial':
+			symbol += 'F';
+		break;
+		case 'metric':
+			symbol += 'C';
+		break;
+		case '':
+		default:
+			symbol += 'K';
+		break;
+	}
+	return(preTemp + Math.round(temp) + symbol);
 }

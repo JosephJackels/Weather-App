@@ -58,12 +58,13 @@ function requestListener(){
 	//parses response, build elements from response, appends to page
 
 	var results = JSON.parse(this.responseText);
-	console.log(results);
+	//console.log(results);
 	if(results.cod == '200'){
 		if(results.hasOwnProperty('list')){
 			document.getElementById('forecastWeatherResponseContainer').appendChild(createForecastWeatherContainer(results));
 		} else {
 			document.getElementById('currentWeatherResponseContainer').appendChild(createCurrentWeatherCard(results));
+			moveMap(results.coord.lon, results.coord.lat);
 		}
 	} else if(results.cod == '404'){
 		var attemptType = searchString.substring(0,searchString.indexOf('='));
