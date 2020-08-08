@@ -70,3 +70,6 @@ background: #3ac7a4;
 	transform: translateX(50%);
 	position: absolute;
 }
+span{
+	display: block;
+}

@@ -23,22 +23,21 @@ function createCurrentWeatherCard(results){
 
 	var cardContainer = document.createElement('div');
 	cardContainer.classList.add('currentWeatherCardContainer');
-	//cardContainer.appendChild(createTitleContainer(results.name, unixTimeToDate(results.dt * 1000 + results.timezone)));
 	
 	var currentWeatherCardMainPanel = document.createElement('div');
 	currentWeatherCardMainPanel.classList.add('currentWeatherCardMainPanel');
 		
-		var cityNameComp = document.createElement('div');
+		var cityNameComp = document.createElement('span');
 		cityNameComp.classList.add('cityNameComp');
 		cityNameComp.innerText = results.name;
 		currentWeatherCardMainPanel.appendChild(cityNameComp);
 
-		var dateTimeComp = document.createElement('div');
+		var dateTimeComp = document.createElement('span');
 		dateTimeComp.classList.add('dateTimeComp');
 		dateTimeComp.innerText =getDayFromUnixTime(results.dt, results.timezone) + ', ' + unixTimeToDate(results.dt * 1000 + results.timezone);
 		currentWeatherCardMainPanel.appendChild(dateTimeComp);
 
-		var weatherDescriptionComp = document.createElement('div');
+		var weatherDescriptionComp = document.createElement('span');
 		weatherDescriptionComp.classList.add('weatherDescriptionComp');
 		weatherDescriptionComp.innerText = results.weather[0].main + ' - ' + results.weather[0].description;
 		currentWeatherCardMainPanel.appendChild(weatherDescriptionComp);
@@ -56,12 +55,12 @@ function createCurrentWeatherCard(results){
 	var currentTemperatureContainer = document.createElement('div');
 	currentTemperatureContainer.classList.add('currentTemperatureContainer');
 		
-		var currentTempComp = document.createElement('div');
+		var currentTempComp = document.createElement('span');
 		currentTempComp.classList.add('tempComp', 'currentTempComp');
 		currentTempComp.innerText = "Currently: " + Math.round(results.main.temp) + unitSymbol;
 		currentTemperatureContainer.appendChild(currentTempComp);
 
-		var feelsLikeTempComp = document.createElement('div');
+		var feelsLikeTempComp = document.createElement('span');
 		feelsLikeTempComp.classList.add('tempComp', 'feelsLikeTempComp');
 		feelsLikeTempComp.innerText = 'Feels like: ' + Math.round(results.main.feels_like) + unitSymbol;
 		currentTemperatureContainer.appendChild(feelsLikeTempComp);
@@ -88,7 +87,7 @@ function createForecastWeatherCard(forecastGroup, timezone, cardCount){
 	forecastCard.classList.add('forecastCard');
 	forecastCard.style.width = 'calc(100%/' + cardCount +')';
 
-	var forecastCardDayComp = document.createElement('div');
+	var forecastCardDayComp = document.createElement('span');
 	forecastCardDayComp.classList.add('forecastCardDayComp');
 	forecastCardDayComp.innerText = getDayFromUnixTime(forecastGroup[0].dt,timezone);
 	forecastCard.appendChild(forecastCardDayComp);
@@ -116,7 +115,7 @@ function createForecastWeatherCard(forecastGroup, timezone, cardCount){
 	var averageTempHigh = getHighest(tempHighArray);
 	var averageTempLow = getLowest(tempLowArray);
 
-	var weatherTypeComp = document.createElement('div');
+	var weatherTypeComp = document.createElement('span');
 	weatherTypeComp.classList.add('forecastWeatherTypeComp');
 	weatherTypeComp.innerText = modeWeatherType;
 	forecastCard.appendChild(weatherTypeComp);
@@ -127,19 +126,19 @@ function createForecastWeatherCard(forecastGroup, timezone, cardCount){
 	weatherIconComp.setAttribute('src', iconUrl.replace('{imageCode}', modeWeatherIcon + 'd').replace('{resolution}', ''));
 	forecastCard.appendChild(weatherIconComp);
 
-	var tempComp = document.createElement('div');
+	var tempComp = document.createElement('span');
 	tempComp.classList.add('forecastTempComp');
 	tempComp.classList.add('tempComp');
 	tempComp.innerText = Math.round(averageTemp) + unitSymbol;
 	forecastCard.appendChild(tempComp);
 
-	var tempHighComp = document.createElement('div');
+	var tempHighComp = document.createElement('span');
 	tempHighComp.classList.add('forecastTempHighComp');
 	tempHighComp.classList.add('tempComp');
 	tempHighComp.innerText = 'H:' + Math.round(averageTempHigh) + unitSymbol;
 	forecastCard.appendChild(tempHighComp);
 
-	var tempLowComp = document.createElement('div');
+	var tempLowComp = document.createElement('span');
 	tempLowComp.classList.add('forecastTempLowComp');
 	tempLowComp.classList.add('tempComp');
 	tempLowComp.innerText = 'L:' + Math.round(averageTempLow) + unitSymbol;

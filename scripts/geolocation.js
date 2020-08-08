@@ -4,7 +4,7 @@ This file contains global variables:
 	mapLat - used for initializing map coords
 	openWeatherMapUrl - the url for requesting map layers from openweathermap
 	view - used for setting where on the map is being viewed
-	map - the map object, contains all alyers and views
+	map - the map object, contains all layers and views
 	tempLayer - a layer for temperature maps
 	cloudLayer - a layer for cloud cover
 	precipLayer - a layer for precipitation map
