@@ -1,3 +1,21 @@
+/*
+This file contains global variables:
+	mapLon - used for initializing map coords
+	mapLat - used for initializing map coords
+	openWeatherMapUrl - the url for requesting map layers from openweathermap
+	view - used for setting where on the map is being viewed
+	map - the map object, contains all alyers and views
+	tempLayer - a layer for temperature maps
+	cloudLayer - a layer for cloud cover
+	precipLayer - a layer for precipitation map
+
+This file add event listeners:
+	map.on('moveend') - when scrolling/zooming/panning map, make request when move ends
+
+This file contains functions:
+	moveMap - function used to move a map to desired coordinates
+*/
+
 //init coords set to St Paul, MN. init coords are used when geolocation is unavailable/to set map until geolocation is approved,
 //gives map somewhere to 'move' from
 var mapLon = -93.16;

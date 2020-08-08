@@ -2,6 +2,7 @@
 This file contains global variables
 	searchString - used for setting the full query string, including query type and query, when making a request from the openweathermap api
 	units - used to set which unit type the query should be returned in
+	sentFromForm - a boolean used to move the map to display a searched location
 
 This file adds event listeners
 	unitType - sets the global variable unit when the selection is changed
@@ -14,11 +15,12 @@ This file contains functions
 	searchFailed - creates an error message when the search input is not parsed as a zip code or a city name
 	removeOldErrorMessages - checks the document for existing error messages and removes them
 	removeElement - given an element, remove that element from the document by removing it from the list of children of its parent node
+	calcNewTemp - used to convert tempComp elements when a different unit is selected
 */
 
 var searchString;
 var units = document.getElementById('unitType').value;
-
+var sentFromForm = false;
 //document.getElementById('searchType').addEventListener('change', updateSearchForm);
 document.getElementById('unitType').addEventListener('change', updateUnits);
 
@@ -36,7 +38,7 @@ function setSearch(form){
 	//builds search string to be sent to api based upon form values
 	removeOldErrorMessages();
 	removeOldRequest();
-
+	sentFromForm = true;
 	var inputString = form.searchInput.value;
 	var stateCode = form.stateSelect.value;
 
@@ -64,6 +66,7 @@ function createErrorMessage(errorString, appendTo){
 	appendTo.appendChild(errorMessage);
 }
 function searchFailed(){
+	sentFromForm = false;
 	var message = "Search did not parse as ZIP or City Name. ZIP should be in format #####, #####[.-+ ]####, or #########. City name should only contain letters, with multiple word names seperated by a single space between words. Must start and end with a letter.";
 	createErrorMessage(message, document.getElementById("searchForm"));
 }

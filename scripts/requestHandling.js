@@ -64,7 +64,10 @@ function requestListener(){
 			document.getElementById('forecastWeatherResponseContainer').appendChild(createForecastWeatherContainer(results));
 		} else {
 			document.getElementById('currentWeatherResponseContainer').appendChild(createCurrentWeatherCard(results));
-			moveMap(results.coord.lon, results.coord.lat);
+			if(sentFromForm){
+				moveMap(results.coord.lon, results.coord.lat);
+			}
+			sentFromForm = false;
 		}
 	} else if(results.cod == '404'){
 		var attemptType = searchString.substring(0,searchString.indexOf('='));
