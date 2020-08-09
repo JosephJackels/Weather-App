@@ -1,3 +1,5 @@
+*** Found a bug? Have a comment, critique, or suggestion? Want to hire me? Make a commit, or send me an email at jackelsjoseph@gmail.com ***
+
 This is a simple Weather App. A forecast is created via the Open Weather Map API - https://openweathermap.org
 
 The app requests a current forecast and 5day/3hour forecast - the free options from Open Weather Map

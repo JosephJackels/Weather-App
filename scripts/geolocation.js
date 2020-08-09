@@ -1,7 +1,5 @@
 /*
 This file contains global variables:
-	mapLon - used for initializing map coords
-	mapLat - used for initializing map coords
 	openWeatherMapUrl - the url for requesting map layers from openweathermap
 	view - used for setting where on the map is being viewed
 	map - the map object, contains all layers and views
@@ -9,25 +7,23 @@ This file contains global variables:
 	cloudLayer - a layer for cloud cover
 	precipLayer - a layer for precipitation map
 
-This file add event listeners:
+This file adds event listeners:
 	map.on('moveend') - when scrolling/zooming/panning map, make request when move ends
-	layerInputs - event listener for checkboxes controling which weather layers are overlaid on map
+	layerInputs('change') - event listener for checkboxes controling which weather layers are overlaid on map
 
 This file contains functions:
 	moveMap - function used to move a map to desired coordinates
 	setLayer - sets a given layer's visibility to the value of its checkbox
 */
 
-//init coords set to St Paul, MN. init coords are used when geolocation is unavailable/to set map until geolocation is approved,
-//gives map somewhere to 'move' from
-var mapLon = -93.16;
-var mapLat = 44.95;
 var openWeatherMapUrl = 'https://tile.openweathermap.org/map/{layer}/{z}/{x}/{y}.png?appid={api_key}';
 if('geolocation' in navigator){
 	navigator.geolocation.getCurrentPosition((position) => {moveMap(position.coords.longitude, position.coords.latitude);});
 }
+//init coords set to St Paul, MN (Falcon Heights). init coords are used when geolocation is unavailable/to set map until geolocation is approved,
+//gives map somewhere to 'move' from
 var view = new ol.View({
-	center: ol.proj.fromLonLat([mapLon, mapLat]),
+	center: ol.proj.fromLonLat([-93.16, 44.95]),
 	zoom: 4,
 });
 
@@ -76,6 +72,23 @@ function moveMap(lon, lat){
 		center: newCenter,
 		duration: 2000,
 	});
+}
+
+function zoomMap(zoomLevel){
+	view.animate({
+		zoom: zoomLevel,
+		duration: 2000,
+	});
+}
+
+function bounceTo(lon, lat){
+	if(view.getZoom() == 4){
+		moveMap(lon, lat);
+		zoomMap(12);
+	} else {
+		zoomMap(8);
+		setTimeout(function(){moveMap(lon, lat); zoomMap(12);}, 3000);
+	}
 }
 
 var layerInputs = document.querySelectorAll('.layerSelector');

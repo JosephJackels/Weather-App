@@ -65,7 +65,7 @@ function requestListener(){
 		} else {
 			document.getElementById('currentWeatherResponseContainer').appendChild(createCurrentWeatherCard(results));
 			if(sentFromForm){
-				moveMap(results.coord.lon, results.coord.lat);
+				bounceTo(results.coord.lon, results.coord.lat);
 			}
 			sentFromForm = false;
 		}
