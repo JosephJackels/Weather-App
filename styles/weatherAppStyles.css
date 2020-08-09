@@ -1,8 +1,4 @@
-
-.pageHeader {
-	text-align: center;
-}
-.searchContainer {
+.pageTitle, .searchContainer, #alignmentContainer, #layerSelectorsContainer{
 	text-align: center;
 }
 .currentWeatherCardContainer {
@@ -21,10 +17,7 @@
 	display: inline-block;
 }
 body{
-background: #3ac7a4;
-}
-#alignmentContainer{
-	text-align:center;
+	background: #3ac7a4;
 }
 #weatherResponseContainer{
 	width:80%;
