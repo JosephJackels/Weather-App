@@ -23,7 +23,21 @@ var units = document.getElementById('unitType').value;
 var sentFromForm = false;
 //document.getElementById('searchType').addEventListener('change', updateSearchForm);
 document.getElementById('unitType').addEventListener('change', updateUnits);
+document.getElementById('stateSelect').addEventListener('change', handleCountrySelect);
 
+function handleCountrySelect(stateInput){
+	var selector = document.getElementById('countrySelect');
+	
+	if(stateInput.target.value != ''){
+		selector.options[selector.selectedIndex].removeAttribute('selected');
+		selector.options[237].setAttribute('selected', '');//USA
+		selector.setAttribute('disabled', '');
+	}else{
+		selector.removeAttribute('disabled');
+		selector.options[selector.selectedIndex].removeAttribute('selected');
+		selector.options[0].setAttribute('selected', '');
+	}
+}
 function updateUnits(unitInput){
 	//sets the proper unit value when a different option is selected
 	//if request is already made, updates unit values
@@ -39,8 +53,10 @@ function setSearch(form){
 	removeOldErrorMessages();
 	removeOldRequest();
 	sentFromForm = true;
+
 	var inputString = form.searchInput.value;
 	var stateCode = form.stateSelect.value;
+	var countryCode = form.countrySelect.value;
 
 	if(/^\d\d\d\d\d([-. +]?\d\d\d\d)?$/.test(inputString)){
 		searchString = 'zip=' + inputString.slice(0,5);
@@ -48,7 +64,9 @@ function setSearch(form){
 	} else if(/^[a-zA-z]+(\s[a-zA-Z]+)*$/.test(inputString)){
 		searchString = 'q=' + inputString;
 		if(stateCode  != ''){
-			searchString +=',' + stateCode + ',US';
+			searchString += ',' + stateCode + ',US';
+		} else if(countryCode != ''){
+				searchString += ',' + countryCode;
 		}
 		makeRequest();
 	}else {

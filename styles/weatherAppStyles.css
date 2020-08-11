@@ -1,5 +1,28 @@
-.pageTitle, .searchContainer, #alignmentContainer, #layerSelectorsContainer{
+.pageTitle, .searchContainer, .alignmentContainer{
 	text-align: center;
+}
+#optionsContainer{
+	margin: 40px 0px 0px 0px;
+	height: calc(10vh);
+}
+#optionsContainer > .alignmentContainer{
+	width: 80%;
+	height: inherit;
+	position: absolute;
+	right: 50%;
+	transform: translateX(50%);
+}
+#layerSelectorsContainer{
+	display: inline;
+	position: absolute;
+	left: 0%;
+	bottom: 5px;
+}
+#unitSelectorContainer{
+	display: inline;
+	position: absolute;
+	right: 0%;
+	bottom: 5px;
 }
 .currentWeatherCardContainer {
 	width: 100%;
@@ -52,7 +75,6 @@ body{
             inset 20px 20px 60px #43e5bd;
 }
 #mapContainer{
-	margin: 40px 0px 0px 0px;
 	position: relative;
 	height: calc(25vh);
 }

@@ -18,6 +18,7 @@ var unitSymbol;
 
 function getWeather(){
 	//performs a request from openweathermap.org using their api
+	removeOldRequest();
 	var currentWeatherRequest = new XMLHttpRequest();
 	var forecastWeatherRequest = new XMLHttpRequest();
 
@@ -51,7 +52,7 @@ function removeOldRequest() {
 
 }
 function removeAllChildren(parent){
-	parent.childNodes.forEach(node => parent.removeChild(node));
+	parent.innerHTML = '';
 }
 function requestListener(){
 	//fires when a response is recieved from api request
@@ -61,13 +62,15 @@ function requestListener(){
 	//console.log(results);
 	if(results.cod == '200'){
 		if(results.hasOwnProperty('list')){
+			removeAllChildren(document.getElementById('forecastWeatherResponseContainer'));
 			document.getElementById('forecastWeatherResponseContainer').appendChild(createForecastWeatherContainer(results));
 		} else {
+			removeAllChildren(document.getElementById('currentWeatherResponseContainer'));
 			document.getElementById('currentWeatherResponseContainer').appendChild(createCurrentWeatherCard(results));
 			if(sentFromForm){
 				bounceTo(results.coord.lon, results.coord.lat);
+				sentFromForm = false;
 			}
-			sentFromForm = false;
 		}
 	} else if(results.cod == '404'){
 		var attemptType = searchString.substring(0,searchString.indexOf('='));

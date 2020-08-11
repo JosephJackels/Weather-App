@@ -13,6 +13,8 @@ This file adds event listeners:
 
 This file contains functions:
 	moveMap - function used to move a map to desired coordinates
+	zoomMap - function to animate a change in zoom level
+	bounceTo - function to zoom out of current coordinates and zoom in on new coordinates
 	setLayer - sets a given layer's visibility to the value of its checkbox
 */
 
@@ -62,7 +64,6 @@ map.on('moveend', function(){
 	var tempLon = ol.proj.toLonLat(map.getView().getCenter())[0];
 	var tempLat = ol.proj.toLonLat(map.getView().getCenter())[1];
 	searchString = 'lat={lat}&lon={lon}'.replace('{lat}', tempLat).replace('{lon}', tempLon);
-	removeOldRequest();
 	getWeather();
 });
 
@@ -80,15 +81,13 @@ function zoomMap(zoomLevel){
 		duration: 2000,
 	});
 }
-
+//The high timeout may make some searches seem slow, specifically when the new search is close to the old one
+//The high timout is required in case the new search is very very far so that the zoom is done after panning
 function bounceTo(lon, lat){
-	if(view.getZoom() == 4){
-		moveMap(lon, lat);
-		zoomMap(12);
-	} else {
-		zoomMap(8);
-		setTimeout(function(){moveMap(lon, lat); zoomMap(12);}, 3000);
-	}
+	if(view.getZoom() > 4){
+		zoomMap(4);
+	} 
+	setTimeout(function(){moveMap(lon, lat); zoomMap(12);}, 3000);
 }
 
 var layerInputs = document.querySelectorAll('.layerSelector');
